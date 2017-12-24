@@ -1,0 +1,35 @@
+settings {
+    logfile         = "/var/log/lsyncd/lsyncd.log",
+    statusFile      = "/var/log/lsyncd/lsyncd.stat",
+    statusInterval  = 1
+}
+
+defSyncTemplate = {
+    default.rsyncssh,
+    delay = 5,
+    delete = true,
+    rsync = {
+        verbose = false,
+        archive = true,
+        hard_links = true,
+        acls = true,
+        sparse = true,
+        rsh="/usr/bin/ssh -T -o Compression=no -o StrictHostKeyChecking=no -x"
+    }    
+}
+
+--[[
+sync {
+    defSyncTemplate,
+    source="/var/www/html",
+    host="myhost01.example.com",
+    targetdir="/tmp/htmlcopy/",
+}
+
+sync {
+    defSyncTemplate,
+    source="/staging",
+    host="myhost01.example.com",
+    targetdir="/tmp/staging/",
+}
+]]--
